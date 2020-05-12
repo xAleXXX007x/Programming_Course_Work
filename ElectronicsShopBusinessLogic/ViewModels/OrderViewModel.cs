@@ -8,7 +8,7 @@ using System.Text;
 namespace ElectronicsShopBusinessLogic.ViewModels
 {
     [DataContract]
-    public class OrderBindingModel
+    public class OrderViewModel
     {
         [DataMember]
         public int Id { get; set; }
@@ -37,6 +37,6 @@ namespace ElectronicsShopBusinessLogic.ViewModels
         public int Sum { get; set; }
 
         [DataMember]
-        public List<OrderProductBindingModel> Products { get; set; }
+        public List<OrderProductViewModel> Products { get; set; }
     }
 }

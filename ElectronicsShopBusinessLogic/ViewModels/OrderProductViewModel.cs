@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ElectronicsShopBusinessLogic.ViewModels
 {
     [DataContract]
-    public class OrderProductBindingModel
+    public class OrderProductViewModel
     {
         [DataMember]
         public int Id { get; set; }
