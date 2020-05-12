@@ -1,7 +1,5 @@
-﻿using ElectronicsShopBusinessLogic.ViewModels;
-using System;
+﻿using ElectronicsShopBusinessLogic.BindingModels;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ElectronicsShopBusinessLogic.Interfaces
 {

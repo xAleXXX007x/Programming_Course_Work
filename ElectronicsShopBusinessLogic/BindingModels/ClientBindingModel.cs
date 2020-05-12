@@ -7,7 +7,7 @@ using System.Text;
 namespace ElectronicsShopBusinessLogic.BindingModels
 {
     [DataContract]
-    public class UserBindingModel
+    public class ClientBindingModel
     {
         [DataMember]
         public int Id { get; set; }
