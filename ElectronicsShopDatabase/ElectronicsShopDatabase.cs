@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ElectronicsShopDatabase
 {
-    public class Database : DbContext
+    public class ElectronicsShopDatabase : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

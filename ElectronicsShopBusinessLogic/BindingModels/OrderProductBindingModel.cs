@@ -7,7 +7,7 @@ namespace ElectronicsShopBusinessLogic.BindingModels
     public class OrderProductBindingModel
     {
         [DataMember]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [DataMember]
         public int OrderId { get; set; }

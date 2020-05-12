@@ -1,11 +1,12 @@
 ﻿using ElectronicsShopBusinessLogic.BindingModels;
+using ElectronicsShopBusinessLogic.ViewModels;
 using System.Collections.Generic;
 
 namespace ElectronicsShopBusinessLogic.Interfaces
 {
     public interface IPaymentLogic
     {
-        List<PaymentBindingModel> Read(PaymentBindingModel model);
+        List<PaymentViewModel> Read(PaymentBindingModel model);
 
         void CreateOrUpdate(PaymentBindingModel model);
 

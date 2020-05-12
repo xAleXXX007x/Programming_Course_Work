@@ -1,11 +1,12 @@
 ﻿using ElectronicsShopBusinessLogic.BindingModels;
+using ElectronicsShopBusinessLogic.ViewModels;
 using System.Collections.Generic;
 
 namespace ElectronicsShopBusinessLogic.Interfaces
 {
     public interface IProductLogic
     {
-        List<ProductBindingModel> Read(ProductBindingModel model);
+        List<ProductViewModel> Read(ProductBindingModel model);
 
         void CreateOrUpdate(ProductBindingModel model);
 

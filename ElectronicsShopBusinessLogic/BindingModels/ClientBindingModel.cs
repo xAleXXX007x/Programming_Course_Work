@@ -10,7 +10,7 @@ namespace ElectronicsShopBusinessLogic.BindingModels
     public class ClientBindingModel
     {
         [DataMember]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [DataMember]
         public string Login { get; set; }
