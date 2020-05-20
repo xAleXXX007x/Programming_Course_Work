@@ -31,6 +31,9 @@ namespace ElectronicsShopDatabase.Models
         [ForeignKey("OrderId")]
         public virtual List<OrderProduct> Products { get; set; }
 
+        [ForeignKey("OrderId")]
+        public virtual List<Payment> Payments { get; set; }
+
         public virtual Client Client { get; set; }
     }
 }

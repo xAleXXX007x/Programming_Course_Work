@@ -18,7 +18,7 @@ namespace ElectronicsShopDatabase.Models
         [Required]
         public string Email { get; set; }
 
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         public bool Blocked { get; set; }
 

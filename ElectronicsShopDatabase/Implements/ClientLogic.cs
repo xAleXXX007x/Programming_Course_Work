@@ -67,7 +67,8 @@ namespace ElectronicsShopDatabase.Implements
                 if (model != null)
                 {
                     result.AddRange(context.Clients
-                        .Where(rec => (rec.Login == model.Login && rec.Password == model.Password))
+                        .Where(rec => (rec.Login == model.Login || rec.Email == model.Email)
+                        && (model.Password == null || rec.Password == model.Password))
                         .Select(rec => CreateViewModel(rec)));
                 }
                 else

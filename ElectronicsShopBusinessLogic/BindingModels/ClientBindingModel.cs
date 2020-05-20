@@ -22,7 +22,7 @@ namespace ElectronicsShopBusinessLogic.BindingModels
         public string Email { get; set; }
 
         [DataMember]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [DataMember]
         public bool Blocked { get; set; }

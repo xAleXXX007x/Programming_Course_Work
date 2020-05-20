@@ -26,7 +26,7 @@ namespace ElectronicsShopBusinessLogic.ViewModels
 
         [DataMember]
         [DisplayName("Телефон")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [DataMember]
         [DisplayName("Блокировка")]
