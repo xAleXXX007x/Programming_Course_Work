@@ -1,0 +1,16 @@
+﻿@model ElectronicsShopClientView.Models.RegistrationModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h1>@ViewData["Title"]</h1>
+@using (Html.BeginForm("Registration", "Client"))
+{
+    <p>Логин: @Html.TextBoxFor(x => x.Login)</p>
+    <p>E-Mail: @Html.TextBoxFor(x => x.Email)</p>
+    <p>Пароль: @Html.TextBoxFor(x => x.Password)</p>
+    <p>Ваш телефон: @Html.TextBoxFor(x => x.Phone)</p>
+    @Html.ValidationSummary()
+    <input type="submit" value="Зарегистрироваться" />
+}

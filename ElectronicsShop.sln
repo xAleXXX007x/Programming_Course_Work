@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsShopBusinessLogic", "ElectronicsShopBusinessLogic\ElectronicsShopBusinessLogic.csproj", "{457AC66B-2025-48F3-BFFD-4E2DC4757180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicsShopBusinessLogic", "ElectronicsShopBusinessLogic\ElectronicsShopBusinessLogic.csproj", "{457AC66B-2025-48F3-BFFD-4E2DC4757180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsShopDatabase", "ElectronicsShopDatabase\ElectronicsShopDatabase.csproj", "{BB02DFC5-3D0E-458C-B7D2-D2189F70CBCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicsShopDatabase", "ElectronicsShopDatabase\ElectronicsShopDatabase.csproj", "{BB02DFC5-3D0E-458C-B7D2-D2189F70CBCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsShopClientView", "ElectronicsShopClientView\ElectronicsShopClientView.csproj", "{6EC2764A-08D2-4C39-8A3A-1B4A1D62C3F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BB02DFC5-3D0E-458C-B7D2-D2189F70CBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB02DFC5-3D0E-458C-B7D2-D2189F70CBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB02DFC5-3D0E-458C-B7D2-D2189F70CBCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC2764A-08D2-4C39-8A3A-1B4A1D62C3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC2764A-08D2-4C39-8A3A-1B4A1D62C3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC2764A-08D2-4C39-8A3A-1B4A1D62C3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC2764A-08D2-4C39-8A3A-1B4A1D62C3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

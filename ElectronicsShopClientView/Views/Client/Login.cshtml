@@ -1,0 +1,14 @@
+﻿@model ElectronicsShopClientView.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Авторизация";
+}
+<h1>@ViewData["Title"]</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <p>Логин: @Html.EditorFor(x => x.Login)</p>
+    <p>Пароль: @Html.EditorFor(x => x.Password)</p>
+    <button type="submit">Войти</button>
+}
