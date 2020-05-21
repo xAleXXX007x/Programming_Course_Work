@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Товары";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@foreach (var product in ViewBag.products)
+{
+    <p>Товар: @product.Name</p>
+    <p>Описание: @product.Desc</p>
+    <p>Цена: @product.Price</p>
+    <hr />
+}
+
+@if (Program.Client != null && Program.AdminMode)
+{
+<a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CreateProduct">Добавить товар</a>
+}

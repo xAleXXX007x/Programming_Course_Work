@@ -1,0 +1,16 @@
+﻿@model ElectronicsShopClientView.Models.CreateProductModel
+
+@{
+    ViewData["Title"] = "Создать товар";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <p>Название: @Html.EditorFor(x => x.Name)</p>
+    <p>Описание: @Html.EditorFor(x => x.Desc)</p>
+    <p>Цена: @Html.EditorFor(x => x.Price)</p>
+    <button type="submit">Создать</button>
+}

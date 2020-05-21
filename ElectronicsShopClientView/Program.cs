@@ -15,6 +15,8 @@ namespace ElectronicsShopClientView
     {
         public static ClientViewModel Client = null;
 
+        public static bool AdminMode = false;
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

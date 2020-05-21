@@ -42,14 +42,21 @@ namespace ElectronicsShopClientView.Controllers
 
             Program.Client = clientView;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Product");
         }
 
         public IActionResult Logout()
         {
             Program.Client = null;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Product");
+        }
+
+        public IActionResult Admin()
+        {
+            Program.AdminMode = !Program.AdminMode;
+
+            return RedirectToAction("Index", "Product");
         }
 
         public IActionResult Registration()
@@ -92,7 +99,7 @@ namespace ElectronicsShopClientView.Controllers
                     Phone = client.Phone
                 });
 
-                return View("Login", client);
+                return View("Login");
             }
 
             return View(client);
