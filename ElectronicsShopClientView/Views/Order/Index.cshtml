@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Заказы";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@foreach (var order in ViewBag.orders)
+{
+    <p>Номер: @order.Id</p>
+    <p>Дата заказа: @order.Date</p>
+    <p>Статус: @order.Status</p>
+    <p>Доставка: @order.Shipping, по адресу @order.Address</p>
+    <p>Состав:</p>
+    <table>
+        <tr>
+            <td>Товар</td>
+            <td>Описание</td>
+            <td>Количество</td>
+            <td>Цена</td>
+        </tr>
+        @foreach(var product in order.Products)
+        {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product.Desc</td>
+            <td>@product.Count</td>
+            <td>@product.Price</td>
+        </tr>
+        }
+    </table>
+    <hr />
+}
+
+<a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">Заказать</a>
+
