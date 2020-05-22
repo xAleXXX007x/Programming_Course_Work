@@ -55,14 +55,14 @@ namespace ElectronicsShopDatabase.Implements
                                 {
                                     OrderId = order.Id,
                                     ProductId = groupProduct.ProductId,
-                                    Count = groupProduct.ProductId
+                                    Count = groupProduct.Count
                                 });
 
                                 context.SaveChanges();
                             }
-
-                            transaction.Commit();
                         }
+
+                        transaction.Commit();
 
                     } catch (Exception)
                     {
