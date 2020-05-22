@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using ElectronicsShopBusinessLogic.BindingModels;
 using ElectronicsShopBusinessLogic.Enums;
 using ElectronicsShopBusinessLogic.Interfaces;
+using ElectronicsShopBusinessLogic.ViewModels;
 using ElectronicsShopClientView.Models;
 using ElectronicsShopDatabase.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols;
 
 namespace ElectronicsShopClientView.Controllers
 {
@@ -15,11 +17,13 @@ namespace ElectronicsShopClientView.Controllers
     {
         private readonly IOrderLogic _orderLogic;
         private readonly IProductLogic _productLogic;
+        private readonly IPaymentLogic _paymentLogic;
 
-        public OrderController(IOrderLogic orderLogic, IProductLogic productLogic)
+        public OrderController(IOrderLogic orderLogic, IProductLogic productLogic, IPaymentLogic paymentLogic)
         {
             _orderLogic = orderLogic;
             _productLogic = productLogic;
+            _paymentLogic = paymentLogic;
         }
 
         public IActionResult Index()
@@ -49,11 +53,11 @@ namespace ElectronicsShopClientView.Controllers
                             Name = productData.Name,
                             Desc = productData.Desc,
                             Count = product.Count,
-                            Price = product.Count * productData.Price
+                            Price = productData.Price
                         });
                     }
                 }
- 
+
                 orderModels.Add(new OrderModel
                 {
                     Id = order.Id,
@@ -62,6 +66,7 @@ namespace ElectronicsShopClientView.Controllers
                     Shipping = order.Shipping,
                     Address = order.Address,
                     Sum = order.Sum,
+                    LeftSum = CalculateLeftSum(order),
                     Products = products
                 });
             }
@@ -80,6 +85,16 @@ namespace ElectronicsShopClientView.Controllers
         [HttpPost]
         public ActionResult CreateOrder(CreateOrderModel model)
         {
+            if (model.Shipping == Shipping.Самовывоз)
+            {
+                model.Address = "Адрес магазина";
+            } else
+            {
+                ViewBag.Products = _productLogic.Read(null);
+                ModelState.AddModelError("", "Не введён адрес доставки");
+                return View(model);
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Products = _productLogic.Read(null);
@@ -90,11 +105,21 @@ namespace ElectronicsShopClientView.Controllers
 
             foreach (var product in model.Products)
             {
-                orderProducts.Add(new OrderProductBindingModel
+                if (product.Value > 0)
                 {
-                    ProductId = product.Key,
-                    Count = product.Value
-                });
+                    orderProducts.Add(new OrderProductBindingModel
+                    {
+                        ProductId = product.Key,
+                        Count = product.Value
+                    });
+                }
+            }
+
+            if (orderProducts.Count == 0)
+            {
+                ViewBag.Products = _productLogic.Read(null);
+                ModelState.AddModelError("", "Ни один товар не выбран");
+                return View(model);
             }
 
             _orderLogic.CreateOrUpdate(new OrderBindingModel
@@ -115,17 +140,92 @@ namespace ElectronicsShopClientView.Controllers
         {
             int sum = 0;
 
-            foreach(var product in orderProducts)
+            foreach (var product in orderProducts)
             {
                 var productData = _productLogic.Read(new ProductBindingModel { Id = product.ProductId }).FirstOrDefault();
 
                 if (productData != null)
                 {
-                    sum += productData.Price;
+                    sum += productData.Price * product.Count;
                 }
             }
 
             return sum;
+        }
+
+        public IActionResult PayOrder(int id)
+        {
+            var order = _orderLogic.Read(new OrderBindingModel
+            {
+                Id = id
+            }).FirstOrDefault();
+            ViewBag.Order = order;
+            ViewBag.LeftSum = CalculateLeftSum(order);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PayOrder(PayOrderModel model)
+        {
+            OrderViewModel order = _orderLogic.Read(new OrderBindingModel
+            {
+                Id = model.OrderId
+            }).FirstOrDefault();
+
+            int leftSum = CalculateLeftSum(order);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Order = order;
+                ViewBag.LeftSum = leftSum;
+                return View(model);
+            }
+
+            if (leftSum < model.Sum)
+            {
+                ViewBag.Order = order;
+                ViewBag.LeftSum = leftSum;
+                return View(model);
+            }
+
+            _paymentLogic.CreateOrUpdate(new PaymentBindingModel
+            {
+                OrderId = order.Id,
+                ClientId = Program.Client.Id,
+                Account = model.Account,
+                Date = DateTime.Now,
+                Sum = model.Sum
+            });
+
+            leftSum -= model.Sum;
+
+            _orderLogic.CreateOrUpdate(new OrderBindingModel
+            {
+                Id = order.Id,
+                ClientId = order.ClientId,
+                Date = order.Date,
+                Status = leftSum > 0 ? OrderStatus.Оплачивается : OrderStatus.Оплачен,
+                Sum = order.Sum,
+                Products = order.Products.Select(rec => new OrderProductBindingModel
+                {
+                    Id = rec.Id,
+                    OrderId = rec.OrderId,
+                    ProductId = rec.ProductId,
+                    Count = rec.Count
+                }).ToList()
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        private int CalculateLeftSum(OrderViewModel order)
+        {
+            int sum = order.Sum;
+            int paidSum = _paymentLogic.Read(new PaymentBindingModel {
+                OrderId = order.Id
+            }).Select(rec => rec.Sum).Sum();
+
+            return sum - paidSum;
         }
     }
 }

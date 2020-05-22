@@ -20,6 +20,8 @@ namespace ElectronicsShopClientView.Models
 
         public int Sum { get; set; }
 
+        public int LeftSum { get; set; }
+
         public List<OrderProductModel> Products { get; set; }
     }
 }

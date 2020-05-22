@@ -16,18 +16,38 @@
             <td>Товар</td>
             <td>Описание</td>
             <td>Количество</td>
-            <td>Цена</td>
+            <td>Цена за шт.</td>
+            <td>Полная цена</td>
         </tr>
-        @foreach(var product in order.Products)
+        @foreach (var product in order.Products)
         {
-        <tr>
-            <td>@product.Name</td>
-            <td>@product.Desc</td>
-            <td>@product.Count</td>
-            <td>@product.Price</td>
-        </tr>
+            <tr>
+                @{
+                    var price = product.Price * product.Count;
+                }
+                <td>@product.Name</td>
+                <td>@product.Desc</td>
+                <td>@product.Count</td>
+                <td>@product.Price</td>
+                <td>@price</td>
+            </tr>
         }
     </table>
+    <p>Сумма заказа: @order.Sum</p>
+    if (order.Status == ElectronicsShopBusinessLogic.Enums.OrderStatus.Оплачен)
+    {
+        <p>Полностью оплачено</p>
+    }
+    else
+    {
+        if (order.Status == ElectronicsShopBusinessLogic.Enums.OrderStatus.Оплачивается)
+        {
+            <p>К оплате: @order.LeftSum</p>
+        }
+
+        <a href="/Order/PayOrder/@order.Id">Оплатить</a>
+    }
+
     <hr />
 }
 

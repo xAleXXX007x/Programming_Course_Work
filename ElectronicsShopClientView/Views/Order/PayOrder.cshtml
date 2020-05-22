@@ -1,0 +1,14 @@
+﻿@model ElectronicsShopClientView.Models.PayOrderModel
+
+<h1>Оплатить заказ №@ViewBag.Order.Id</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+
+    <p>Остаток: @ViewBag.LeftSum</p>
+    <p>Сумма: <input type="number" min="1" max="@ViewBag.LeftSum" name="Model.Sum" /></p>
+    <p>Счёт: <input type="text" name="Model.Account" /></p>
+    <input type="hidden" name="Model.OrderId" value="@((int)ViewBag.Order.Id)" />
+    <button type="submit">Оплатить</button>
+}

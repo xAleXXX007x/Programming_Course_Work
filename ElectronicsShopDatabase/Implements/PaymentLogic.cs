@@ -67,7 +67,7 @@ namespace ElectronicsShopDatabase.Implements
                 if (model != null)
                 {
                     result.AddRange(context.Payments
-                        .Where(rec => rec.Id == model.Id)
+                        .Where(rec => rec.Id == model.Id || rec.OrderId.Equals(model.OrderId))
                         .Select(rec => CreateViewModel(rec)));
                 }
                 else

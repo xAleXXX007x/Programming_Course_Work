@@ -13,7 +13,6 @@ namespace ElectronicsShopClientView.Models
         [Required]
         public Shipping Shipping { get; set; }
 
-        [Required]
         public string Address { get; set; }
 
         [Required]
