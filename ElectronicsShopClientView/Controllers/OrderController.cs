@@ -39,7 +39,7 @@ namespace ElectronicsShopClientView.Controllers
                 {
                     var productData = _productLogic.Read(new ProductBindingModel
                     {
-                        Id = product.Id
+                        Id = product.ProductId
                     }).FirstOrDefault();
 
                     if (productData != null)
@@ -53,7 +53,7 @@ namespace ElectronicsShopClientView.Controllers
                         });
                     }
                 }
-
+ 
                 orderModels.Add(new OrderModel
                 {
                     Id = order.Id,
@@ -78,16 +78,11 @@ namespace ElectronicsShopClientView.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateOrder(CreateOrderModel model, int productId, int count)
-        {
-            return View(model);
-        }
-
-        [HttpPost]
         public ActionResult CreateOrder(CreateOrderModel model)
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Products = _productLogic.Read(null);
                 return View(model);
             }
 
@@ -97,8 +92,8 @@ namespace ElectronicsShopClientView.Controllers
             {
                 orderProducts.Add(new OrderProductBindingModel
                 {
-                    ProductId = product.Id,
-                    Count = product.Count
+                    ProductId = product.Key,
+                    Count = product.Value
                 });
             }
 

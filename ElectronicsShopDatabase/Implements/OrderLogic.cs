@@ -22,21 +22,54 @@ namespace ElectronicsShopDatabase.Implements
                     tempOrder = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
                 }
 
-                if (model.Id.HasValue)
+                using (var transaction = context.Database.BeginTransaction())
                 {
-                    if (tempOrder == null)
+                    try
                     {
-                        throw new Exception("Элемент не найден");
+                        if (model.Id.HasValue)
+                        {
+                            if (tempOrder == null)
+                            {
+                                throw new Exception("Элемент не найден");
+                            }
+
+                            CreateModel(model, tempOrder);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            Order order = CreateModel(model, tempOrder);
+                            context.Orders.Add(order);
+                            context.SaveChanges();
+                            var groupProducts = model.Products
+                                .GroupBy(rec => rec.ProductId)
+                                .Select(rec => new
+                                {
+                                    ProductId = rec.Key,
+                                    Count = rec.Sum(r => r.Count)
+                                });
+
+                            foreach (var groupProduct in groupProducts)
+                            {
+                                context.OrderProducts.Add(new OrderProduct
+                                {
+                                    OrderId = order.Id,
+                                    ProductId = groupProduct.ProductId,
+                                    Count = groupProduct.ProductId
+                                });
+
+                                context.SaveChanges();
+                            }
+
+                            transaction.Commit();
+                        }
+
+                    } catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
                     }
-
-                    CreateModel(model, tempOrder);
                 }
-                else
-                {
-                    context.Orders.Add(CreateModel(model, tempOrder));
-                }
-
-                context.SaveChanges();
             }
         }
 
@@ -97,6 +130,18 @@ namespace ElectronicsShopDatabase.Implements
         {
             using (var context = new ElectronicsShopDatabase())
             {
+                var prods = context.OrderProducts.Select(rec => rec).ToList();
+
+                var products = context.OrderProducts
+                    .Where(rec => rec.OrderId == order.Id)
+                    .Select(rec => new OrderProductViewModel
+                    {
+                        Id = rec.Id,
+                        OrderId = rec.OrderId,
+                        ProductId = rec.ProductId,
+                        Count = rec.Count
+                    }).ToList();
+
                 return new OrderViewModel
                 {
                     Id = order.Id,
@@ -105,7 +150,8 @@ namespace ElectronicsShopDatabase.Implements
                     Status = order.Status,
                     Shipping = order.Shipping,
                     Address = order.Address,
-                    Sum = order.Sum
+                    Sum = order.Sum,
+                    Products = products
                 };
             }
         }

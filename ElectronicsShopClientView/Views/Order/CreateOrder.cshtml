@@ -11,7 +11,7 @@
 {
     @Html.ValidationSummary()
     <p>Тип доставки: @Html.DropDownListFor(rec => rec.Shipping, Html.GetEnumSelectList<Shipping>())</p>
-    <p>Адрес: @Html.EditorFor(x => x.Address)</p>
+    <p>Адрес: <input type="text" name="Model.Address" /></p>
     <p>Состав:</p>
     <table>
         <tr>
@@ -20,16 +20,16 @@
             <td>Количество</td>
             <td>Цена</td>
         </tr>
-        @foreach (var product in ViewBag.Products)
+        @foreach (ElectronicsShopBusinessLogic.ViewModels.ProductViewModel product in ViewBag.Products)
         {
             <tr>
                 <td>@product.Name</td>
                 <td>@product.Desc</td>
-                <td><input type="number" name="productId"/></td>
+                <td><input type="number" name="Model.Products[@product.Id]" /></td>
                 <td>@product.Price</td>
             </tr>
         }
     </table>
 
-    <button type="submit" onchange="">Создать</button>
+    <button type="submit">Создать</button>
 }

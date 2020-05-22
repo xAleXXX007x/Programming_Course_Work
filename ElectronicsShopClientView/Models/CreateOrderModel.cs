@@ -10,12 +10,13 @@ namespace ElectronicsShopClientView.Models
 {
     public class CreateOrderModel
     {
+        [Required]
         public Shipping Shipping { get; set; }
 
+        [Required]
         public string Address { get; set; }
 
-        public List<OrderProductViewModel> Products { get; set; }
-
-        public List<ProductViewModel> AllProducts { get; set; }
+        [Required]
+        public Dictionary<int, int> Products { get; set; }
     }
 }
