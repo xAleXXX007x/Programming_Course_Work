@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicsShopDatabase.Migrations
 {
     [DbContext(typeof(ElectronicsShopDatabase))]
-    [Migration("20200520140714_InitialCreate")]
+    [Migration("20200522170801_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,8 +118,9 @@ namespace ElectronicsShopDatabase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Account")
-                        .HasColumnType("int");
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");

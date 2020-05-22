@@ -20,7 +20,7 @@ namespace ElectronicsShopBusinessLogic.ViewModels
 
         [DataMember]
         [DisplayName("Счет")]
-        public int Account { get; set; }
+        public string Account { get; set; }
 
         [DataMember]
         [DisplayName("Дата оплаты")]

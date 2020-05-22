@@ -12,7 +12,7 @@ namespace ElectronicsShopDatabase.Models
         public int ClientId { get; set; }
 
         [Required]
-        public int Account { get; set; }
+        public string Account { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

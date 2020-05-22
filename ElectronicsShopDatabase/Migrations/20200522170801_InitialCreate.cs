@@ -99,7 +99,7 @@ namespace ElectronicsShopDatabase.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(nullable: false),
                     ClientId = table.Column<int>(nullable: false),
-                    Account = table.Column<int>(nullable: false),
+                    Account = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Sum = table.Column<int>(nullable: false)
                 },

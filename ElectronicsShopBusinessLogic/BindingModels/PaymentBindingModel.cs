@@ -19,7 +19,7 @@ namespace ElectronicsShopBusinessLogic.BindingModels
         public int ClientId { get; set; }
 
         [DataMember]
-        public int Account { get; set; }
+        public string Account { get; set; }
 
         [DataMember]
         public DateTime Date { get; set; }
