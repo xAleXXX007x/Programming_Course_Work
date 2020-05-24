@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using ElectronicsShopBusinessLogic.BindingModels;
+using ElectronicsShopBusinessLogic.BusinessLogics;
 using ElectronicsShopBusinessLogic.Enums;
 using ElectronicsShopBusinessLogic.Interfaces;
 using ElectronicsShopBusinessLogic.ViewModels;
 using ElectronicsShopClientView.Models;
 using ElectronicsShopDatabase.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.IdentityModel.Protocols;
 
 namespace ElectronicsShopClientView.Controllers
@@ -18,12 +22,14 @@ namespace ElectronicsShopClientView.Controllers
         private readonly IOrderLogic _orderLogic;
         private readonly IProductLogic _productLogic;
         private readonly IPaymentLogic _paymentLogic;
+        private readonly ReportLogic _reportLogic;
 
-        public OrderController(IOrderLogic orderLogic, IProductLogic productLogic, IPaymentLogic paymentLogic)
+        public OrderController(IOrderLogic orderLogic, IProductLogic productLogic, IPaymentLogic paymentLogic, ReportLogic reportLogic)
         {
             _orderLogic = orderLogic;
             _productLogic = productLogic;
             _paymentLogic = paymentLogic;
+            _reportLogic = reportLogic;
         }
 
         public IActionResult Index()
@@ -74,6 +80,20 @@ namespace ElectronicsShopClientView.Controllers
             ViewBag.Orders = orderModels;
 
             return View();
+        }
+
+        public IActionResult SendWordReport(int id)
+        {
+            var order = _orderLogic.Read(new OrderBindingModel { Id = id }).FirstOrDefault();
+            _reportLogic.SendOrderProducts(order, Program.Client.Email, FileExtension.Word);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SendExcelReport(int id)
+        {
+            var order = _orderLogic.Read(new OrderBindingModel { Id = id }).FirstOrDefault();
+            _reportLogic.SendOrderProducts(order, Program.Client.Email, FileExtension.Excel);
+            return RedirectToAction("Index");
         }
 
         public IActionResult CreateOrder()

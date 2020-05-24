@@ -32,7 +32,7 @@ namespace ElectronicsShopClientView
             services.AddTransient<IOrderLogic, OrderLogic>();
             services.AddTransient<IPaymentLogic, PaymentLogic>();
             services.AddTransient<IProductLogic, ProductLogic>();
-            services.AddTransient<MainLogic>();
+            services.AddTransient<ReportLogic>();
 
             services.AddControllersWithViews();
         }
