@@ -16,6 +16,15 @@ namespace ElectronicsShopBusinessLogic.ViewModels
         public int ProductId { get; set; }
 
         [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Desc { get; set; }
+
+        [DataMember]
+        public int Price { get; set; }
+
+        [DataMember]
         [DisplayName("Количество")]
         public int Count { get; set; }
     }
