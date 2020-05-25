@@ -12,40 +12,115 @@ namespace AircraftFactoryBusinessLogic
 {
     static class SaveToPdf
     {
-        public static void CreateDoc(PdfInfo info)
+        public static void CreateDoc(OrderPaymentsInfo info)
         {
             Document document = new Document();
             DefineStyles(document);
             Section section = document.AddSection();
             Paragraph paragraph = section.AddParagraph(info.Title);
-            paragraph.Format.SpaceAfter = "1cm";
             paragraph.Format.Alignment = ParagraphAlignment.Center;
             paragraph.Style = "NormalTitle";
-            paragraph.Style = "Normal";
-            var table = document.LastSection.AddTable();
 
-            List<string> columns = new List<string> { "3cm", "3cm", "4cm" };
-            foreach (var elem in columns)
+            foreach (var order in info.Orders)
             {
-                table.AddColumn(elem);
-            }
-            CreateRow(new PdfRowParameters
-            {
-                Table = table,
-                Texts = new List<string> { "Самолёт", "Запчасть", "Количество" },
-                Style = "NormalTitle",
-                ParagraphAlignment = ParagraphAlignment.Center
-            });
+                var orderLabel = section.AddParagraph("Заказ №" + order.Id + " от " + order.Date.ToString());
+                orderLabel.Style = "NormalTitle";
+                orderLabel.Format.SpaceBefore = "1cm";
+                orderLabel.Format.SpaceAfter = "0,25cm";
 
-            foreach (var part in info.Orders)
-            {
+                section.AddParagraph("Тип доставки: " + order.Shipping.ToString());
+                section.AddParagraph("Адрес: " + (order.Address != null ? order.Address : "Адрес магазина"));
+
+                var productsLabel = section.AddParagraph("Товары:");
+                productsLabel.Style = "NormalTitle";
+
+                var productTable = document.LastSection.AddTable();
+
+                List<string> headerWidths = new List<string> { "1cm", "3cm", "4cm", "4cm", "2cm" };
+
+                foreach (var elem in headerWidths)
+                {
+                    productTable.AddColumn(elem);
+                }
+
                 CreateRow(new PdfRowParameters
                 {
-                    Table = table,
-                    //Texts = new List<string> { part.AircraftName, part.PartName, part.Count.ToString() },
+                    Table = productTable,
+                    Texts = new List<string> { "№", "Название", "Описание", "Количество", "Цена" },
+                    Style = "NormalTitle",
+                    ParagraphAlignment = ParagraphAlignment.Center
+                });
+
+                int i = 1;
+
+                foreach (var product in order.Products)
+                {
+                    CreateRow(new PdfRowParameters
+                    {
+                        Table = productTable,
+                        Texts = new List<string> { i.ToString(), product.Name, product.Desc, product.Count.ToString(), (product.Price * product.Count).ToString() },
+                        Style = "Normal",
+                        ParagraphAlignment = ParagraphAlignment.Left
+                    });
+
+                    i++;
+                }
+
+                CreateRow(new PdfRowParameters
+                {
+                    Table = productTable,
+                    Texts = new List<string> { "", "", "", "Итого:", order.Sum.ToString() },
                     Style = "Normal",
                     ParagraphAlignment = ParagraphAlignment.Left
                 });
+
+                CreateRow(new PdfRowParameters
+                {
+                    Table = productTable,
+                    Texts = new List<string> { "", "", "", "Оплачено:", order.SumPaid.ToString() },
+                    Style = "Normal",
+                    ParagraphAlignment = ParagraphAlignment.Left
+                });
+
+                if (info.Payments[order.Id].Count == 0)
+                {
+                    continue;
+                }
+
+                var paymentsLabel = section.AddParagraph("Оплаты:");
+                paymentsLabel.Style = "NormalTitle";
+
+                var paymentTable = document.LastSection.AddTable();
+
+                headerWidths = new List<string> { "1cm", "3cm", "3cm", "3cm", "2cm" };
+
+                foreach (var elem in headerWidths)
+                {
+                    paymentTable.AddColumn(elem);
+                }
+
+                CreateRow(new PdfRowParameters
+                {
+                    Table = paymentTable,
+                    Texts = new List<string> { "№", "Дата", "Клиент", "Счёт", "Сумма" },
+                    Style = "NormalTitle",
+                    ParagraphAlignment = ParagraphAlignment.Center
+                });
+
+                i = 1;
+
+                foreach (var payment in info.Payments[order.Id])
+                {
+                    CreateRow(new PdfRowParameters
+                    {
+                        Table = paymentTable,
+                        Texts = new List<string> { i.ToString(), payment.Date.ToString(), payment.ClientLogin, payment.Account, payment.Sum.ToString() },
+                        Style = "Normal",
+                        ParagraphAlignment = ParagraphAlignment.Left
+                    });
+
+                    i++;
+                }
             }
 
             PdfDocumentRenderer renderer = new PdfDocumentRenderer(true)

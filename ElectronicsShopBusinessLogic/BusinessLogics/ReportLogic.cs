@@ -17,10 +17,14 @@ namespace ElectronicsShopBusinessLogic.BusinessLogics
     public class ReportLogic
     {
         private readonly IProductLogic productLogic;
+        private readonly IOrderLogic orderLogic;
+        private readonly IPaymentLogic paymentLogic;
 
-        public ReportLogic(IProductLogic productLogic)
+        public ReportLogic(IProductLogic productLogic, IOrderLogic orderLogic, IPaymentLogic paymentLogic)
         {
             this.productLogic = productLogic;
+            this.orderLogic = orderLogic;
+            this.paymentLogic = paymentLogic;
         }
 
         public void SendOrderProducts(OrderViewModel order, string email, FileExtension ext)
@@ -52,6 +56,33 @@ namespace ElectronicsShopBusinessLogic.BusinessLogics
                 });
             }
 
+
+            SendMail(email, fileName, subject);
+        }
+
+        public void SendOrdersReport(OrderBindingModel model, string email)
+        {
+            string fileName = Directory.GetCurrentDirectory() + "\\Reports\\periodreport.pdf";
+            string subject = "Список заказов в период с " + model.Date.ToString() + " по " + model.DateTo.ToString();
+
+            var orders = orderLogic.Read(model).ToList();
+
+            Dictionary<int, List<PaymentViewModel>> payments = new Dictionary<int, List<PaymentViewModel>>();
+
+            foreach (var order in orders)
+            {
+                var orderPayments = paymentLogic.Read(new PaymentBindingModel { OrderId = order.Id }).ToList();
+
+                payments.Add(order.Id, orderPayments);
+            }
+
+            SaveToPdf.CreateDoc(new OrderPaymentsInfo
+            {
+                FileName = fileName,
+                Title = subject,
+                Orders = orders,
+                Payments = payments
+            });
 
             SendMail(email, fileName, subject);
         }

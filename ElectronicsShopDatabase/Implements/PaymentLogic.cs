@@ -44,7 +44,7 @@ namespace ElectronicsShopDatabase.Implements
         {
             using (var context = new ElectronicsShopDatabase())
             {
-                Payment element = context.Payments.FirstOrDefault(rec => rec.Id == model.Id.Value);
+                Payment element = context.Payments.FirstOrDefault(rec => rec.Id == model.Id.Value || rec.OrderId == model.OrderId);
 
                 if (element != null)
                 {
@@ -101,6 +101,7 @@ namespace ElectronicsShopDatabase.Implements
                     Id = payment.Id,
                     OrderId = payment.OrderId,
                     ClientId = payment.ClientId,
+                    ClientLogin = context.Clients.Where(rec => rec.Id == payment.ClientId).FirstOrDefault().Login,
                     Account = payment.Account,
                     Date = payment.Date,
                     Sum = payment.Sum

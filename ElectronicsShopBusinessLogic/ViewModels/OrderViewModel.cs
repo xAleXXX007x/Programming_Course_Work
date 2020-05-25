@@ -37,6 +37,10 @@ namespace ElectronicsShopBusinessLogic.ViewModels
         public int Sum { get; set; }
 
         [DataMember]
+        [DisplayName("Оплачено")]
+        public int SumPaid { get; set; }
+
+        [DataMember]
         public List<OrderProductViewModel> Products { get; set; }
     }
 }

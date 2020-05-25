@@ -23,6 +23,10 @@ namespace ElectronicsShopBusinessLogic.ViewModels
         public string Account { get; set; }
 
         [DataMember]
+        [DisplayName("Пользователь")]
+        public string ClientLogin { get; set; }
+
+        [DataMember]
         [DisplayName("Дата оплаты")]
         public DateTime Date { get; set; }
 

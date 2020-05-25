@@ -17,7 +17,10 @@ namespace ElectronicsShopBusinessLogic.BindingModels
         public int ClientId { get; set; }
 
         [DataMember]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
+
+        [DataMember]
+        public DateTime? DateTo { get; set; }
 
         [DataMember]
         public OrderStatus Status { get; set; }

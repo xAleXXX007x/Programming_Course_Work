@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using ElectronicsShopBusinessLogic.BindingModels;
 using ElectronicsShopBusinessLogic.BusinessLogics;
 using ElectronicsShopBusinessLogic.Enums;
@@ -34,50 +35,33 @@ namespace ElectronicsShopClientView.Controllers
 
         public IActionResult Index()
         {
-            var orders = _orderLogic.Read(new OrderBindingModel
+            ViewBag.Orders = _orderLogic.Read(new OrderBindingModel
             {
                 ClientId = Program.Client.Id
             });
 
-            var orderModels = new List<OrderModel>();
+            return View();
+        }
 
-            foreach (var order in orders)
+        [HttpPost]
+        public IActionResult Index(PeriodOrderModel model)
+        {
+            ViewBag.Orders = _orderLogic.Read(new OrderBindingModel
             {
-                var products = new List<OrderProductModel>();
+                ClientId = Program.Client.Id,
+                Date = model.From,
+                DateTo = model.To
+            });
 
-                foreach (var product in order.Products)
+            if (model.SendMail)
+            {
+                _reportLogic.SendOrdersReport(new OrderBindingModel
                 {
-                    var productData = _productLogic.Read(new ProductBindingModel
-                    {
-                        Id = product.ProductId
-                    }).FirstOrDefault();
-
-                    if (productData != null)
-                    {
-                        products.Add(new OrderProductModel
-                        {
-                            Name = productData.Name,
-                            Desc = productData.Desc,
-                            Count = product.Count,
-                            Price = productData.Price
-                        });
-                    }
-                }
-
-                orderModels.Add(new OrderModel
-                {
-                    Id = order.Id,
-                    Date = order.Date,
-                    Status = order.Status,
-                    Shipping = order.Shipping,
-                    Address = order.Address,
-                    Sum = order.Sum,
-                    LeftSum = CalculateLeftSum(order),
-                    Products = products
-                });
+                    ClientId = Program.Client.Id,
+                    Date = model.From,
+                    DateTo = model.To
+                }, Program.Client.Email);
             }
-
-            ViewBag.Orders = orderModels;
 
             return View();
         }
@@ -180,7 +164,6 @@ namespace ElectronicsShopClientView.Controllers
                 Id = id
             }).FirstOrDefault();
             ViewBag.Order = order;
-            ViewBag.LeftSum = CalculateLeftSum(order);
             return View();
         }
 
@@ -192,19 +175,15 @@ namespace ElectronicsShopClientView.Controllers
                 Id = model.OrderId
             }).FirstOrDefault();
 
-            int leftSum = CalculateLeftSum(order);
-
             if (!ModelState.IsValid)
             {
                 ViewBag.Order = order;
-                ViewBag.LeftSum = leftSum;
                 return View(model);
             }
 
-            if (leftSum < model.Sum)
+            if (order.SumPaid < model.Sum)
             {
                 ViewBag.Order = order;
-                ViewBag.LeftSum = leftSum;
                 return View(model);
             }
 
@@ -217,14 +196,12 @@ namespace ElectronicsShopClientView.Controllers
                 Sum = model.Sum
             });
 
-            leftSum -= model.Sum;
-
             _orderLogic.CreateOrUpdate(new OrderBindingModel
             {
                 Id = order.Id,
                 ClientId = order.ClientId,
                 Date = order.Date,
-                Status = leftSum > 0 ? OrderStatus.Оплачивается : OrderStatus.Оплачен,
+                Status = order.SumPaid + model.Sum < order.Sum ? OrderStatus.Оплачивается : OrderStatus.Оплачен,
                 Sum = order.Sum,
                 Products = order.Products.Select(rec => new OrderProductBindingModel
                 {
@@ -236,16 +213,6 @@ namespace ElectronicsShopClientView.Controllers
             });
 
             return RedirectToAction("Index");
-        }
-
-        private int CalculateLeftSum(OrderViewModel order)
-        {
-            int sum = order.Sum;
-            int paidSum = _paymentLogic.Read(new PaymentBindingModel {
-                OrderId = order.Id
-            }).Select(rec => rec.Sum).Sum();
-
-            return sum - paidSum;
         }
     }
 }

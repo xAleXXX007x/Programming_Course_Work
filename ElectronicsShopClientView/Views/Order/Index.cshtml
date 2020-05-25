@@ -1,5 +1,19 @@
-﻿@{
+﻿@model ElectronicsShopClientView.Models.PeriodOrderModel
+
+@{
     ViewData["Title"] = "Заказы";
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        Получить отчеты за период
+        От: @Html.EditorFor(x => x.From)
+        До: @Html.EditorFor(x => x.To)
+        @Html.EditorFor(x => x.SendMail) Отправить отчёт на почту
+
+        <button type="submit">Получить</button>
+    </p>
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -42,7 +56,7 @@
     {
         if (order.Status == ElectronicsShopBusinessLogic.Enums.OrderStatus.Оплачивается)
         {
-            <p>К оплате: @order.LeftSum</p>
+            <p>Оплачено: @order.SumPaid</p>
         }
 
         <a href="/Order/PayOrder/@order.Id">Оплатить</a>

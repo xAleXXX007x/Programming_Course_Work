@@ -2,6 +2,7 @@
 using ElectronicsShopBusinessLogic.Interfaces;
 using ElectronicsShopBusinessLogic.ViewModels;
 using ElectronicsShopDatabase.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,7 +101,8 @@ namespace ElectronicsShopDatabase.Implements
                 if (model != null)
                 {
                     result.AddRange(context.Orders
-                        .Where(rec => rec.Id == model.Id || rec.ClientId == model.ClientId)
+                        .Where(rec => rec.Id == model.Id || rec.ClientId == model.ClientId
+                        && (model.Date == null && model.DateTo == null || rec.Date >= model.Date && rec.Date <= model.DateTo))
                         .Select(rec => CreateViewModel(rec)));
                 }
                 else
@@ -116,7 +118,7 @@ namespace ElectronicsShopDatabase.Implements
             using (var context = new ElectronicsShopDatabase())
             {
                 order.ClientId = model.ClientId;
-                order.Date = model.Date;
+                order.Date = model.Date.Value;
                 order.Status = model.Status;
                 order.Shipping = model.Shipping;
                 order.Address = model.Address;
@@ -130,10 +132,9 @@ namespace ElectronicsShopDatabase.Implements
         {
             using (var context = new ElectronicsShopDatabase())
             {
-                var prods = context.OrderProducts.Select(rec => rec).ToList();
-
                 var products = context.OrderProducts
                     .Where(rec => rec.OrderId == order.Id)
+                    .Include(rec => rec.Product)
                     .Select(rec => new OrderProductViewModel
                     {
                         Id = rec.Id,
@@ -141,6 +142,15 @@ namespace ElectronicsShopDatabase.Implements
                         ProductId = rec.ProductId,
                         Count = rec.Count
                     }).ToList();
+
+                foreach (var product in products)
+                {
+                    var productData = context.Products.Where(rec => rec.Id == product.ProductId).FirstOrDefault();
+
+                    product.Name = productData.Name;
+                    product.Desc = productData.Desc;
+                    product.Price = productData.Price;
+                }
 
                 return new OrderViewModel
                 {
@@ -151,6 +161,7 @@ namespace ElectronicsShopDatabase.Implements
                     Shipping = order.Shipping,
                     Address = order.Address,
                     Sum = order.Sum,
+                    SumPaid = context.Payments.Where(rec => rec.OrderId == order.Id).Select(rec => rec.Sum).Sum(),
                     Products = products
                 };
             }
