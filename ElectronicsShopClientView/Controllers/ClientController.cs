@@ -59,6 +59,13 @@ namespace ElectronicsShopClientView.Controllers
             return RedirectToAction("Index", "Product");
         }
 
+        public IActionResult Block()
+        {
+            Program.Client.Blocked = !Program.Client.Blocked;
+
+            return RedirectToAction("Profile");
+        }
+
         public IActionResult Registration()
         {
             return View();

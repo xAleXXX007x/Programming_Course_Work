@@ -3,4 +3,16 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Not implemented yet.</p>
+@if (Program.AdminMode)
+{
+    <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Block">
+        @if (Program.Client.Blocked)
+        {
+            <div>Разблокировать</div>
+        }
+        else
+        {
+            <div>Заблокировать</div>
+        }
+    </a>
+}

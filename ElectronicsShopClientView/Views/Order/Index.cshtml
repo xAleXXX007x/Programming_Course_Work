@@ -66,5 +66,8 @@
     <hr />
 }
 
-<a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">Заказать</a>
+@if (!Program.Client.Blocked)
+{
+    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">Заказать</a>
+}
 
