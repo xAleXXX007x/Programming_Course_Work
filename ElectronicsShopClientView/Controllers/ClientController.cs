@@ -61,7 +61,19 @@ namespace ElectronicsShopClientView.Controllers
 
         public IActionResult Block()
         {
-            Program.Client.Blocked = !Program.Client.Blocked;
+            var client = Program.Client;
+
+            client.Blocked = !client.Blocked;
+
+            _client.CreateOrUpdate(new ClientBindingModel
+            {
+                Id = client.Id,
+                Login = client.Login,
+                Password = client.Password,
+                Email = client.Email,
+                Phone = client.Phone,
+                Blocked = client.Blocked
+            });
 
             return RedirectToAction("Profile");
         }
