@@ -97,6 +97,9 @@ namespace ElectronicsShopDatabase.Migrations
                     b.Property<int?>("PartId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductCategory")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -156,6 +159,9 @@ namespace ElectronicsShopDatabase.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductCategory")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

@@ -32,7 +32,8 @@ namespace ElectronicsShopDatabase.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Desc = table.Column<string>(nullable: true),
-                    Price = table.Column<int>(nullable: false)
+                    Price = table.Column<int>(nullable: false),
+                    ProductCategory = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,6 +73,7 @@ namespace ElectronicsShopDatabase.Migrations
                     OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     Count = table.Column<int>(nullable: false),
+                    ProductCategory = table.Column<int>(nullable: false),
                     PartId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

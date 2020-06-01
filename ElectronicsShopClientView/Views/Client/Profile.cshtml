@@ -3,6 +3,20 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+@if (ViewBag.Favorites.Count > 0)
+{
+    <p><b>Избранные товары:</b></p>
+    <table>
+        @foreach (var category in ViewBag.Favorites)
+        {
+            <tr>
+                <td>@Program.GetEnumDescription(category)</td>
+            </tr>
+        }
+    </table>
+    <hr />
+}
+
 @if (Program.AdminMode)
 {
     <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Block">

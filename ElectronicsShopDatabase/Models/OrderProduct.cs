@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ElectronicsShopBusinessLogic.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ElectronicsShopDatabase.Models
 {
@@ -12,6 +13,8 @@ namespace ElectronicsShopDatabase.Models
 
         [Required]
         public int Count { get; set; }
+
+        public ProductCategory ProductCategory { get; set; }
 
         public virtual Order Order { get; set; }
 

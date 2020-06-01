@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectronicsShopBusinessLogic.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace ElectronicsShopClientView.Models
 
         [Required]
         public int Price { get; set; }
+
+        public ProductCategory ProductCategory { get; set; }
     }
 }

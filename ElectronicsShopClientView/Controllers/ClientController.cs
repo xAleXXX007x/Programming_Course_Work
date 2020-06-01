@@ -7,16 +7,20 @@ using ElectronicsShopClientView.Models;
 using ElectronicsShopBusinessLogic.Interfaces;
 using ElectronicsShopBusinessLogic.BindingModels;
 using Microsoft.AspNetCore.Identity;
+using ElectronicsShopBusinessLogic.Enums;
+using ElectronicsShopDatabase.Models;
 
 namespace ElectronicsShopClientView.Controllers
 {
     public class ClientController : Controller
     {
         private readonly IClientLogic _client;
+        private readonly IOrderLogic _order;
 
-        public ClientController(IClientLogic client)
+        public ClientController(IClientLogic client, IOrderLogic order)
         {
             _client = client;
+            _order = order;
         }
 
         public IActionResult Login()
@@ -126,7 +130,43 @@ namespace ElectronicsShopClientView.Controllers
 
         public IActionResult Profile()
         {
+            ViewBag.Favorites = GetFavoriteCategories();
+
             return View();
+        }
+
+        private List<ProductCategory> GetFavoriteCategories()
+        {
+            Dictionary<ProductCategory, int> productCategories = new Dictionary<ProductCategory, int>();
+
+            foreach (var order in _order.Read(new OrderBindingModel { ClientId = Program.Client.Id }))
+            {
+                foreach (var product in order.Products)
+                {
+                    var category = product.ProductCategory;
+
+                    if (productCategories.ContainsKey(category))
+                    {
+                        productCategories[category] += product.Count;
+                    }
+                    else
+                    {
+                        productCategories[category] = product.Count;
+                    }
+                }
+            }
+
+            var categories = productCategories.ToList();
+            categories.Sort((p1, p2) => p2.Value.CompareTo(p1.Value));
+
+            var result = new List<ProductCategory>();
+
+            foreach (var cat in categories)
+            {
+                result.Add(cat.Key);
+            }
+
+            return result;
         }
     }
 }

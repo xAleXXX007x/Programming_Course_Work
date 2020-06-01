@@ -67,7 +67,8 @@ namespace ElectronicsShopDatabase.Implements
                 if (model != null)
                 {
                     result.AddRange(context.Products
-                        .Where(rec => rec.Id == model.Id || rec.Name == model.Name)
+                        .Where(rec => rec.Id == model.Id || rec.Name == model.Name
+                        || (model.Name == null && model.Id == null && rec.ProductCategory == model.ProductCategory))
                         .Select(rec => CreateViewModel(rec)));
                 }
                 else
@@ -85,6 +86,7 @@ namespace ElectronicsShopDatabase.Implements
                 product.Name = model.Name;
                 product.Desc = model.Desc;
                 product.Price = model.Price;
+                product.ProductCategory = model.ProductCategory;
 
                 return product;
             }
@@ -99,7 +101,8 @@ namespace ElectronicsShopDatabase.Implements
                     Id = product.Id,
                     Name = product.Name,
                     Desc = product.Desc,
-                    Price = product.Price
+                    Price = product.Price,
+                    ProductCategory = product.ProductCategory
                 };
             }
         }

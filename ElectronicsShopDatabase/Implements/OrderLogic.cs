@@ -150,6 +150,7 @@ namespace ElectronicsShopDatabase.Implements
                     product.Name = productData.Name;
                     product.Desc = productData.Desc;
                     product.Price = productData.Price;
+                    product.ProductCategory = productData.ProductCategory;
                 }
 
                 return new OrderViewModel

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicsShopDatabase.Migrations
 {
     [DbContext(typeof(ElectronicsShopDatabase))]
-    [Migration("20200522170801_InitialCreate")]
+    [Migration("20200601085649_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,9 @@ namespace ElectronicsShopDatabase.Migrations
                     b.Property<int?>("PartId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductCategory")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -158,6 +161,9 @@ namespace ElectronicsShopDatabase.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductCategory")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

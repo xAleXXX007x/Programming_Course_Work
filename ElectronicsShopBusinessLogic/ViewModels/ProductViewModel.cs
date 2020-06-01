@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ElectronicsShopBusinessLogic.Enums;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace ElectronicsShopBusinessLogic.ViewModels
@@ -20,5 +21,9 @@ namespace ElectronicsShopBusinessLogic.ViewModels
         [DataMember]
         [DisplayName("Цена")]
         public int Price { get; set; }
+
+        [DataMember]
+        [DisplayName("Категория")]
+        public ProductCategory ProductCategory { get; set; }
     }
 }

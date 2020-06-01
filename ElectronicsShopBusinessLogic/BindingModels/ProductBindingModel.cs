@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ElectronicsShopBusinessLogic.Enums;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace ElectronicsShopBusinessLogic.BindingModels
@@ -17,5 +18,8 @@ namespace ElectronicsShopBusinessLogic.BindingModels
 
         [DataMember]
         public int Price { get; set; }
+
+        [DataMember]
+        public ProductCategory ProductCategory { get; set; }
     }
 }
