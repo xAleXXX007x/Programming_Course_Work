@@ -36,6 +36,13 @@ namespace ElectronicsShopClientView.Controllers
             return View();
         }
 
+        public IActionResult DeleteProduct(int id)
+        {
+            _logic.Delete(new ProductBindingModel { Id = id });
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult EditProduct(int? id)
         {
             if (id != null)

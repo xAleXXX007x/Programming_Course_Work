@@ -146,11 +146,14 @@ namespace ElectronicsShopDatabase.Implements
                 foreach (var product in products)
                 {
                     var productData = context.Products.Where(rec => rec.Id == product.ProductId).FirstOrDefault();
-
-                    product.Name = productData.Name;
-                    product.Desc = productData.Desc;
-                    product.Price = productData.Price;
-                    product.ProductCategory = productData.ProductCategory;
+                    
+                    if (productData != null)
+                    {
+                        product.Name = productData.Name;
+                        product.Desc = productData.Desc;
+                        product.Price = productData.Price;
+                        product.ProductCategory = productData.ProductCategory;
+                    }
                 }
 
                 return new OrderViewModel

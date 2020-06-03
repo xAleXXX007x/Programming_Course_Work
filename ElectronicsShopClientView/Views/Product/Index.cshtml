@@ -25,12 +25,13 @@
     @if (Program.Client != null && Program.AdminMode)
     {
         <a href="/Product/EditProduct/@product.Id">Изменить</a>
+        <a href="/Product/DeleteProduct/@product.Id">Удалить</a>
     }
 
     <hr />
 }
 
-    @if (Program.Client != null && Program.AdminMode)
-    {
-        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="EditProduct">Добавить товар</a>
-    }
+@if (Program.Client != null && Program.AdminMode)
+{
+    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="EditProduct">Добавить товар</a>
+}
