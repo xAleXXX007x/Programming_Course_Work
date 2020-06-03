@@ -21,10 +21,16 @@
     <p>Категория: @Program.GetEnumDescription(product.ProductCategory)</p>
     <p>Описание: @product.Desc</p>
     <p>Цена: @product.Price</p>
+
+    @if (Program.Client != null && Program.AdminMode)
+    {
+        <a href="/Product/EditProduct/@product.Id">Изменить</a>
+    }
+
     <hr />
 }
 
-@if (Program.Client != null && Program.AdminMode)
-{
-    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CreateProduct">Добавить товар</a>
-}
+    @if (Program.Client != null && Program.AdminMode)
+    {
+        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="EditProduct">Добавить товар</a>
+    }

@@ -36,32 +36,50 @@ namespace ElectronicsShopClientView.Controllers
             return View();
         }
 
-        public IActionResult CreateProduct()
+        public IActionResult EditProduct(int? id)
         {
-            return View();
+            if (id != null)
+            {
+                var product = _logic.Read(new ProductBindingModel { Id = id }).FirstOrDefault();
+
+                return View(new ProductModel
+                {
+                    Id = id,
+                    Name = product.Name,
+                    Desc = product.Desc,
+                    ProductCategory = product.ProductCategory,
+                    Price = product.Price
+                });
+            } else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
-        public ActionResult CreateProduct(CreateProductModel model)
+        public ActionResult EditProduct(ProductModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            var foundProduct = _logic.Read(new ProductBindingModel
+            if (model.Id == null)
             {
-                Name = model.Name
-            }).FirstOrDefault();
+                var foundProduct = _logic.Read(new ProductBindingModel
+                {
+                    Name = model.Name
+                }).FirstOrDefault();
 
-            if (foundProduct != null)
-            {
-                ModelState.AddModelError("", "Товар с таким названием уже существует");
-                return View(model);
+                if (foundProduct != null)
+                {
+                    ModelState.AddModelError("", "Товар с таким названием уже существует");
+                    return View(model);
+                }
             }
 
             _logic.CreateOrUpdate(new ProductBindingModel
             {
+                Id = model.Id,
                 Name = model.Name,
                 Desc = model.Desc,
                 Price = model.Price,

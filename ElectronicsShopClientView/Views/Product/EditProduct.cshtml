@@ -1,5 +1,5 @@
 ﻿@using ElectronicsShopBusinessLogic.Enums
-@model ElectronicsShopClientView.Models.CreateProductModel
+@model ElectronicsShopClientView.Models.ProductModel
 
 @{
     ViewData["Title"] = "Создать товар";
@@ -14,5 +14,6 @@
     <p>Категория: @Html.DropDownListFor(rec => rec.ProductCategory, Html.GetEnumSelectList<ProductCategory>())</p>
     <p>Описание: @Html.EditorFor(x => x.Desc)</p>
     <p>Цена: @Html.EditorFor(x => x.Price)</p>
+    @Html.HiddenFor(x => x.Id)
     <button type="submit">Создать</button>
 }
