@@ -36,13 +36,21 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Admin">
                                     @if (Program.AdminMode)
                                     {
-                                    <div>Режим пользователя</div>
-                                    } else
+                                        <div>Режим пользователя</div>
+                                    }
+                                    else
                                     {
-                                    <div>Режим администратора</div>
+                                        <div>Режим администратора</div>
                                     }
                                 </a>
                             </li>
+
+                            @if (Program.AdminMode)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Backup" asp-action="Backup">Бэкап</a>
+                                </li>
+                            }
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Logout">Выйти</a>
