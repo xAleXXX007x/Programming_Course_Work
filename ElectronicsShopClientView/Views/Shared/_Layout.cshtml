@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Магазин электроники «Я только посмотреть»</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
     <header>
@@ -47,6 +48,10 @@
 
                             @if (Program.AdminMode)
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Clients">Пользователи</a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Backup" asp-action="Backup">Бэкап</a>
                                 </li>

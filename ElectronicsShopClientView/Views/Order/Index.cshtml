@@ -26,7 +26,7 @@
     <p>Доставка: @order.Shipping, по адресу @order.Address</p>
     <p>Состав:</p>
     <table>
-        <tr>
+        <tr class="header">
             <td>Товар</td>
             <td>Описание</td>
             <td>Количество</td>
@@ -47,6 +47,7 @@
             </tr>
         }
     </table>
+    <br />
     <p>Сумма заказа: @order.Sum</p>
     if (order.Status == ElectronicsShopBusinessLogic.Enums.OrderStatus.Оплачен)
     {
@@ -59,10 +60,10 @@
             <p>Оплачено: @order.SumPaid</p>
         }
 
-        <a href="/Order/PayOrder/@order.Id">Оплатить</a>
+        <p><a class="action" href="/Order/PayOrder/@order.Id">Оплатить</a></p>
     }
-    <a href="/Order/SendWordReport/@order.Id">Отправить список товаров .docx</a>
-    <a href="/Order/SendExcelReport/@order.Id">Отправить список товаров .xslx</a>
+    <p><a class="action" href="/Order/SendWordReport/@order.Id">Отправить список товаров .docx</a></p>
+    <p><a class="action" href="/Order/SendExcelReport/@order.Id">Отправить список товаров .xslx</a></p>
     <hr />
 }
 

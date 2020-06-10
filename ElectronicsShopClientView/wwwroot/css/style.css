@@ -1,0 +1,16 @@
+﻿table, th, td, tr {
+    border: 1px solid black;
+    padding: 8px;
+}
+.header {
+    font-weight: bold;
+    text-align: center;
+}
+
+body {
+    line-height: 1;
+}
+
+a.action {
+    font-weight: bold;
+}
