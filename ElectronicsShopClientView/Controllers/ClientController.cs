@@ -63,11 +63,22 @@ namespace ElectronicsShopClientView.Controllers
             return RedirectToAction("Index", "Product");
         }
 
-        public IActionResult Block()
+        public IActionResult Clients()
         {
-            var client = Program.Client;
+            ViewBag.Clients = _client.Read(null);
+            return View();
+        }
 
-            client.Blocked = !client.Blocked;
+        public IActionResult BlockClient(int id)
+        {
+            var client = _client.Read(new ClientBindingModel { Id = id }).FirstOrDefault();
+
+            var blocked = !client.Blocked;
+
+            if (client.Id == Program.Client.Id)
+            {
+                Program.Client.Blocked = blocked;
+            }
 
             _client.CreateOrUpdate(new ClientBindingModel
             {
@@ -76,10 +87,10 @@ namespace ElectronicsShopClientView.Controllers
                 Password = client.Password,
                 Email = client.Email,
                 Phone = client.Phone,
-                Blocked = client.Blocked
+                Blocked = blocked
             });
 
-            return RedirectToAction("Profile");
+            return RedirectToAction("Clients");
         }
 
         public IActionResult Registration()

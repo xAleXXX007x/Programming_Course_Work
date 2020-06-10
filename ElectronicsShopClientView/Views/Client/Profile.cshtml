@@ -16,17 +16,3 @@
     </table>
     <hr />
 }
-
-@if (Program.AdminMode)
-{
-    <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Block">
-        @if (Program.Client.Blocked)
-        {
-            <div>Разблокировать</div>
-        }
-        else
-        {
-            <div>Заблокировать</div>
-        }
-    </a>
-}
