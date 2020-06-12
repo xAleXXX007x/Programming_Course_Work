@@ -99,7 +99,7 @@ namespace ElectronicsShopClientView.Controllers
         }
 
         [HttpPost]
-        public ViewResult Registration(RegistrationModel client)
+        public IActionResult Registration(RegistrationModel client)
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +133,7 @@ namespace ElectronicsShopClientView.Controllers
                     Phone = client.Phone
                 });
 
-                return View("Login");
+                return RedirectToAction("Login");
             }
 
             return View(client);
