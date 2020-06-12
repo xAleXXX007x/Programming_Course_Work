@@ -7,7 +7,7 @@
     @Html.ValidationSummary()
 
     <p>Остаток: @((int)ViewBag.Order.SumPaid)</p>
-    <p>Сумма: <input type="number" min="1" max="@((int)ViewBag.Order.SumPaid)" name="Model.Sum" /></p>
+    <p>Сумма: <input type="number" min="1" max="@((int)(ViewBag.Order.Sum - ViewBag.Order.SumPaid))" name="Model.Sum" /></p>
     <p>Счёт: <input type="text" name="Model.Account" /></p>
     <input type="hidden" name="Model.OrderId" value="@((int)ViewBag.Order.Id)" />
     <button type="submit">Оплатить</button>

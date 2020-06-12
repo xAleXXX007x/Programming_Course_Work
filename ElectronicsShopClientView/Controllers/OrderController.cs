@@ -181,7 +181,7 @@ namespace ElectronicsShopClientView.Controllers
                 return View(model);
             }
 
-            if (order.SumPaid < model.Sum)
+            if (order.SumPaid > model.Sum)
             {
                 ViewBag.Order = order;
                 return View(model);
