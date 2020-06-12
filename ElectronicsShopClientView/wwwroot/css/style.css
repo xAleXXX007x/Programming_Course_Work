@@ -9,8 +9,13 @@
 
 body {
     line-height: 1;
+    margin: 0;
 }
 
 a.action {
+    font-weight: bold;
+}
+
+.nav-link {
     font-weight: bold;
 }
